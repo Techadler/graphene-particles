@@ -5,7 +5,7 @@ module Graphene {
         // Performance
         public AutoAdjustAtomCount: boolean = true;
         public Density: number = 0.5;
-        public MaxAtoms: number = 1000;
+        public MaxAtoms: number = 100;
         public MaxEdgeLength: number = 150;
         public MaxEdgesPerAtom: number = 4;
         // Renderer
@@ -31,6 +31,6 @@ module Graphene {
         public AtomCollisions: boolean = true;
         public WallCollisions: boolean = true;
         public WallFriction: number = 1.0; // How much energy is preserved when bouncing atoms at walls
-        public AtomFriction: number = 1.0; // How much energy is preserved when colliding atoms
+        public AtomFriction: number = 0.9; // How much energy is preserved when colliding atoms
     }
 }

@@ -76,10 +76,11 @@ module Graphene {
             const vS2: Vector = obj2.vS; const vE2: Vector = obj2.vE;
 
             // Resultierender Vektor parallel zu Stoßnormalen
+            const friction: number = this._config.AtomFriction;
             const calcU: Function = function (v1: Vector, v2: Vector, m1: number, m2: number): Vector {
                 const X: number = (m1 * v1.X + m2 * (2 * v2.X - v1.X)) / (m1 + m2);
                 const Y: number = (m1 * v1.Y + m2 * (2 * v2.Y - v1.Y)) / (m1 + m2);
-                return new Vector(X, Y);
+                return new Vector(X, Y).scaleBy(friction);
             };
             const uS1: Vector = calcU(vS1, vS2, atom1.Mass, atom2.Mass);
             const uS2: Vector = calcU(vS2, vS1, atom2.Mass, atom1.Mass);
