@@ -7,6 +7,8 @@ module Graphene {
         private _position: Graphene.Position;
         private _size: number;
         private _vector: Vector;
+        public Links: number = 0;
+        public Visible: boolean;
 
         constructor(id: number, minSize: number, maxSize: number, pos: Graphene.Position, vec: Vector) {
             this._id = id;
