@@ -1,11 +1,16 @@
 {
-  "name": "ts-graph",
+  "name": "graphene",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "AdlerTech",
+  "license": "MIT",
+  "devDependencies": {
+    "tsc": "^1.20150623.0",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3"
+  }
 }
