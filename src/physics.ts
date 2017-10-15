@@ -90,8 +90,8 @@ module Graphene {
 
         private applyLinks(): void {
             const len: number = this._instance.Atoms.length;
-            const maxLinkLength: number = this._config.MaxEdgeLength;
-            const maxLinks: number = this._config.MaxEdgesPerAtom;
+            const maxLinkLength: number = this._config.MaxLinkLength;
+            const maxLinks: number = this._config.MaxLinksPerAtom;
             if (this._instance.Links.length !== len) {
                 this._instance.Links.length = len;
             }

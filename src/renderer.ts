@@ -16,7 +16,7 @@ module Graphene {
             this.drawBackground();
             if (this._instance.Config.DrawQuadTree) { this.drawQuadTree(); }
             this.applyOcclusionCulling();
-            if (this._instance.Config.MaxEdgeLength > 0) { this.drawLinks(); }
+            if (this._instance.Config.MaxLinkLength > 0) { this.drawLinks(); }
             this.drawAtoms();
         }
 
@@ -80,10 +80,10 @@ module Graphene {
             const p2: Position = { X: atom2.Position.X, Y: atom2.Position.Y };
             const v1: Vector = v.scaleTo(atom1.Size); p1.X += v1.X; p1.Y += v1.Y;
             const v2: Vector = v.invert().scaleTo(atom2.Size); p2.X += v2.X; p2.Y += v2.Y;
-            let fac: number = (1 - (dist * dist) / Math.pow(this._instance.Config.MaxEdgeLength, 2));
+            let fac: number = (1 - (dist * dist) / Math.pow(this._instance.Config.MaxLinkLength, 2));
             if (fac < 0) { fac = 0; }
-            this._ctx.lineWidth = this._instance.Config.EdgeWidth * fac;
-            this._ctx.strokeStyle = this._instance.Config.EdgeColor;
+            this._ctx.lineWidth = this._instance.Config.LinkWidth * fac;
+            this._ctx.strokeStyle = this._instance.Config.LinkColor;
             this._ctx.beginPath();
             this._ctx.moveTo(p1.X, p1.Y);
             this._ctx.lineTo(p2.X, p2.Y);

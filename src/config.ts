@@ -6,19 +6,19 @@ module Graphene {
         public AutoAdjustAtomCount: boolean = true;
         public Density: number = 0.5;
         public MaxAtoms: number = 100;
-        public MaxEdgeLength: number = 150;
-        public MaxEdgesPerAtom: number = 4;
+        public MaxLinkLength: number = 150;
+        public MaxLinksPerAtom: number = 4;
         // Renderer
         public AlphaBackground: boolean = false;
-        public DrawEdges: boolean = true;
+        public DrawLinks: boolean = true;
         public DrawQuadTree: boolean = true;
-        public EdgeWidth: number = 1.5;
+        public LinkWidth: number = 1.5;
         public AtomMinSize: number = 4;
         public AtomMaxSize: number = 8;
         public MaxFPS: number = 60;
         // Colors
         public BackgroundColor: string;
-        public EdgeColor: string;
+        public LinkColor: string;
         public AtomColor: string;
         public AtomBorderColor: string;
         // Dimensions
