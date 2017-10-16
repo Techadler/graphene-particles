@@ -21,6 +21,7 @@ module Graphene {
             }
             for (; delta >= step; delta -= step) {
                 this._quadTree = null;
+                this.applyForce();
                 this.applyAtomWallCollisions();
                 this.checkAtomAtomCollisions();
                 this.moveAtoms();
@@ -35,14 +36,26 @@ module Graphene {
             const width: number = this._instance.Width;
             const height: number = this._instance.Height;
 
+            const outSideBoxX: Function = function (atom: Atom): boolean {
+                return (atom.Position.X - atom.Size < 0 && atom.Vector.X < 0)
+                    || (atom.Position.X + atom.Size >= width && atom.Vector.X > 0);
+            };
+            const outSideBoxY: Function = function (atom: Atom): boolean {
+                return (atom.Position.Y - atom.Size < 0 && atom.Vector.Y < 0)
+                    || (atom.Position.Y + atom.Size >= height && atom.Vector.Y > 0);
+            };
+
             for (const atom of this._instance.Atoms) {
-                if ((atom.Position.X - atom.Size < 0 && atom.Vector.X < 0) ||  // Left Border, Vector pointing outward
-                    (atom.Position.X + atom.Size >= width && atom.Vector.X > 0)) { // Right Border, Vector pointing outward
+                if (outSideBoxX(atom)) {
                     atom.Vector = new Vector(atom.Vector.X * -1, atom.Vector.Y);
                 }
-                if ((atom.Position.Y - atom.Size < 0 && atom.Vector.Y < 0) ||  // Upper Border, Vector pointing outward
-                    (atom.Position.Y + atom.Size >= height && atom.Vector.Y > 0)) { // Lower Border, Vector pointing outward
+                if (outSideBoxY(atom)) {
                     atom.Vector = new Vector(atom.Vector.X, atom.Vector.Y * -1);
+                }
+                while (outSideBoxX(atom) || outSideBoxY(atom)) {
+                    const v: Vector = atom.Vector.scaleBy(this.getSpeedFactor() * 0.1);
+                    atom.Position.X += v.X;
+                    atom.Position.Y += v.Y;
                 }
             }
 
@@ -86,6 +99,27 @@ module Graphene {
             const uS2: Vector = calcU(vS2, vS1, atom2.Mass, atom1.Mass);
             atom1.Vector = uS1.add(vE1);
             atom2.Vector = uS2.add(vE2);
+        }
+
+        private applyForce(): void {
+            const g: Vector = new Vector(this._instance.Config.Gravity.X, this._instance.Config.Gravity.Y);
+            if (g.length() > 0) {
+                for (const atom of this._instance.Atoms) {
+                    atom.Vector = atom.Vector.add(g.scaleBy(this.getSpeedFactor()));
+                }
+            }
+            for (const a of this._instance.Atoms) {
+                for (let i: number = a.Id + 1; i < this._instance.Atoms.length; ++i) {
+                    const a2: Atom = this._instance.Atoms[i];
+                    const v: Vector = Vector.fromAtoms(a, a2).invert();
+                    const d: number = v.length();
+                    const f: number = 10 * 3 * 3 / Math.pow(d, 2);
+                    const v1: Vector = v.scaleTo(f);
+                    const v2: Vector = v1.invert();
+                    a.Position.X += v1.X; a.Position.Y += v1.Y;
+                    a2.Position.X += v2.X; a2.Position.Y += v2.Y;
+                }
+            }
         }
 
         private applyLinks(): void {
