@@ -6,10 +6,12 @@ module Graphene {
         private _instance: Instance;
         private _config: Config;
         private _quadTree: QuadTree = null;
+        private _control: Control;
 
-        constructor(instance: Instance) {
+        constructor(instance: Instance, control: Control) {
             this._instance = instance;
             this._config = instance.Config;
+            this._control = control;
         }
 
         public update(timestamp: number): void {
@@ -20,12 +22,14 @@ module Graphene {
                 delta = step * 100;
             }
             for (; delta >= step; delta -= step) {
+                this._control.onPhysicsStart();
                 this._quadTree = null;
                 this.applyForce();
                 this.applyAtomWallCollisions();
                 this.checkAtomAtomCollisions();
                 this.moveAtoms();
                 this.applyLinks();
+                this._control.onPhysicsStop();
             }
             this._lastRunTimestamp = timestamp - delta; // If we skip parts of a step run it next time
         }

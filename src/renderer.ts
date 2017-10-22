@@ -33,7 +33,7 @@ module Graphene {
 
         private drawAtoms(): void {
             const atomBorderColor: string = this._instance.Config.AtomBorderColor;
-            const atomColor: string = this._instance.Config.AtomColor;
+            const atomColor: string[] = this._instance.Config.AtomColor as string[];
 
             // Because fill seems to be magnitudes faster than stroke fill border and inner
             // First draw `Border` below atom then draw atom inner color
@@ -43,7 +43,7 @@ module Graphene {
                 this._ctx.beginPath();
                 this._ctx.arc(atom.Position.X, atom.Position.Y, atom.Size, 0, Math.PI * 2);
                 this._ctx.fill();
-                this._ctx.fillStyle = atomColor;
+                this._ctx.fillStyle = atomColor[0];
                 this._ctx.beginPath();
                 this._ctx.arc(atom.Position.X, atom.Position.Y, atom.Size - 1.5, 0, Math.PI * 2);
                 this._ctx.fill();
