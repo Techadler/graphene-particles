@@ -1,8 +1,9 @@
 // Copyright 2017 AdlerTech
 module Graphene {
-    const RECORD_LENGTH: number = 100;
+    const RECORD_LENGTH: number = 1000;
     const TIME_SECOND: number = 1000;
     const DROP_THRESHOLD: number = 5 * TIME_SECOND;
+    const AVERAGE_LENGTH: number = 100; // The samples over which to accumulate the average
     export class Control {
         private _frameTimes: number[] = new Array<number>(RECORD_LENGTH);
         private _frameTimesIdx: number = 0;
@@ -84,6 +85,10 @@ module Graphene {
                 return time / times;
             }
             return 0;
+        }
+
+        public get LastFrameTime(): number {
+            return this._frameTimes[this._frameTimesIdx];
         }
 
         public get LastPhysicsTime(): number {

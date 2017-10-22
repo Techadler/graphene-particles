@@ -18,7 +18,7 @@ module Graphene {
         private _lastRunTimeStamp: number = 0;
         private _cyclesExceeded: number = 0;
         private _autoAtomLimit: number = 0;
-        private _lastFrameAdjustedPopulation: boolean = false;
+        private _framesBetweenControl: number = 0;
 
         private _control: Control = new Control();
 
@@ -64,14 +64,15 @@ module Graphene {
         }
 
         private controlAtomPopulation(): void {
-            // tslint:disable-next-line:max-line-length
-            const densityAtomCount: number = Math.round(this.Config.Density !== 0 ? (this._width * this._height) / 1000 / this.Config.Density : 0);
+            const densityAtomCount: number = Math.round(
+                this.Config.Density !== 0 ?
+                    (this._width * this._height) / 1000 / this.Config.Density : 0
+            );
             const maxAtoms: number = this.Config.MaxAtoms;
-            const maxFrameTime: number = 1000 / this.Config.MaxFPS * 0.9;
+            const maxFrameTime: number = 1000 / this.Config.MaxFPS;
             const averageFrameTime: number = this._control.AverageFrameTime;
             const maxPhysicsTime: number = 1000 / this.Config.TPS * 0.5;
             const averagePhysicsTime: number = this._control.AveragePhysicsTime;
-            // console.log('AveragePhysicsTime', averagePhysicsTime);
 
             let targetAtomCount: number = 0;
             if (densityAtomCount > 0 && maxAtoms > 0) {
@@ -83,25 +84,33 @@ module Graphene {
             }
 
             if (this.Config.AutoAdjustAtomCount) {
-                const atoms: number = this._activeAtomCount > 0 ? this._activeAtomCount : 100;
-                if (!this._lastFrameAdjustedPopulation && averagePhysicsTime > maxPhysicsTime) {
-                    let f: number = maxPhysicsTime / averagePhysicsTime;
-                    if (f > 2) { f = 2; }
+                const atoms: number = this._activeAtomCount > 0 ? this._activeAtomCount : maxAtoms;
+                if (this._control.LastFrameTime > 500) {
+                    targetAtomCount = atoms * 0.2;
+                    this._autoAtomLimit = targetAtomCount;
+                } else if (this._framesBetweenControl <= 0 && averageFrameTime > maxFrameTime * 1.5) {
+                    let f: number = maxFrameTime / averageFrameTime;
+                    if (f < 0.8) { f = 0.8; }
                     targetAtomCount = Math.round(atoms * f);
+                    if (targetAtomCount <= 1) { targetAtomCount = 2; }
                     this._autoAtomLimit = targetAtomCount;
-                    this._lastFrameAdjustedPopulation = true;
+                    this._framesBetweenControl = 100;
                     console.log('PopulationControl:', 'Adjusting atom count from ' + atoms + ' to ' + targetAtomCount + ' Factor is:' + f);
-                } else if (!this._lastFrameAdjustedPopulation && averagePhysicsTime > 0 && averagePhysicsTime < maxPhysicsTime / 2) {
-                    let f: number = averagePhysicsTime / (maxPhysicsTime / 2);
-                    if (f < 1 / 2) { f = 1 / 2; }
-                    targetAtomCount = Math.round(atoms * 1 / f);
+                    console.log('AverageFrameTime: ', averageFrameTime, 'MaxFrameTime', maxFrameTime);
+                } else if (this._framesBetweenControl <= 0 && averageFrameTime > 0 && averageFrameTime < maxFrameTime * 0.5) {
+                    let f: number = maxFrameTime / averageFrameTime;
+                    if (f > 1.2) { f = 1.2; }
+                    targetAtomCount = Math.round(atoms * f);
+                    if (targetAtomCount - atoms > 250) { targetAtomCount = atoms + 250; }
+                    if (targetAtomCount <= 1) { targetAtomCount = 2; }
                     this._autoAtomLimit = targetAtomCount;
-                    this._lastFrameAdjustedPopulation = true;
+                    this._framesBetweenControl = 100;
                     console.log('PopulationControl:', 'Adjusting atom count from ' + atoms + ' to ' + targetAtomCount + ' Factor is:' + f);
+                    console.log('AverageFrameTime: ', averageFrameTime, 'MaxFrameTime', maxFrameTime);
                 } else {
                     targetAtomCount = this._autoAtomLimit;
-                    this._lastFrameAdjustedPopulation = false;
                 }
+                this._framesBetweenControl--;
             }
 
             if (this._atoms.length < targetAtomCount) {
