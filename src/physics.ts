@@ -140,7 +140,9 @@ module Graphene {
             for (const a1 of this._instance.Atoms) {
                 for (let i: number = a1.Id + 1; i < len; ++i) {
                     const a2: Atom = this._instance.Atoms[i];
-                    if (this._instance.Links[a1.Id] == null) { this._instance.Links[a1.Id] = new Array<boolean>(len); }
+                    if (this._instance.Links[a1.Id] == null || this._instance.Links[a1.Id].length !== len) {
+                        this._instance.Links[a1.Id] = new Array<boolean>(len);
+                    }
                     if (a1.distanceTo(a2) <= maxLinkLength && a1.Links < maxLinks && a2.Links < maxLinks) {
                         a1.Links++; a2.Links++;
                         this._instance.Links[a1.Id][a2.Id] = true;
