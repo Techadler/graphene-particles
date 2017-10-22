@@ -24,7 +24,7 @@ module Graphene {
         constructor(id: string, canvas: HTMLCanvasElement, config: Config) {
             this._id = id;
             this._canvas = canvas;
-            this._config = config;
+            this._config = Config.parse(config);
 
             this.updateCanvasDimensions();
 

@@ -108,16 +108,19 @@ module Graphene {
                     atom.Vector = atom.Vector.add(g.scaleBy(this.getSpeedFactor()));
                 }
             }
-            for (const a of this._instance.Atoms) {
-                for (let i: number = a.Id + 1; i < this._instance.Atoms.length; ++i) {
-                    const a2: Atom = this._instance.Atoms[i];
-                    const v: Vector = Vector.fromAtoms(a, a2).invert();
-                    const d: number = v.length();
-                    const f: number = 10 * 3 * 3 / Math.pow(d, 2);
-                    const v1: Vector = v.scaleTo(f);
-                    const v2: Vector = v1.invert();
-                    a.Position.X += v1.X; a.Position.Y += v1.Y;
-                    a2.Position.X += v2.X; a2.Position.Y += v2.Y;
+            const electricalForce: number = this._config.ElectricalForce;
+            if (electricalForce > 0 || electricalForce < 0) {
+                for (const a of this._instance.Atoms) {
+                    for (let i: number = a.Id + 1; i < this._instance.Atoms.length; ++i) {
+                        const a2: Atom = this._instance.Atoms[i];
+                        const v: Vector = Vector.fromAtoms(a, a2).invert();
+                        const d: number = v.length();
+                        const f: number = electricalForce * a.Charge * a2.Charge / Math.pow(d, 2);
+                        const v1: Vector = v.scaleTo(f);
+                        const v2: Vector = v1.invert();
+                        a.Vector = a.Vector.add(v1);
+                        a2.Vector = a2.Vector.add(v2);
+                    }
                 }
             }
         }
@@ -125,7 +128,7 @@ module Graphene {
         private applyLinks(): void {
             const len: number = this._instance.Atoms.length;
             const maxLinkLength: number = this._config.MaxLinkLength;
-            const maxLinks: number = this._config.MaxLinksPerAtom;
+            const maxLinks: number = this._config.MaxLinksPerAtom > 0 ? this._config.MaxLinksPerAtom : Number.MAX_VALUE;
             if (this._instance.Links.length !== len) {
                 this._instance.Links.length = len;
             }

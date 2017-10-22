@@ -3,6 +3,8 @@
 module Graphene {
     export class Atom {
         private _id: number;
+        private _charge: number;
+        private _color: string;
         private _mass: number;
         private _position: Graphene.Position;
         private _size: number;
@@ -13,6 +15,7 @@ module Graphene {
         constructor(id: number, minSize: number, maxSize: number, pos: Graphene.Position, vec: Vector) {
             this._id = id;
             this._position = pos;
+            this._charge = Math.random() > 0.5 ? 1 : -1;
             this._size = Math.random() * Math.abs(maxSize - minSize) + Math.abs(minSize);
             this._mass = (4 / 3) * Math.PI * Math.pow(this._size, 3);
             this._vector = vec;
@@ -27,6 +30,14 @@ module Graphene {
             const x: number = atom.Position.X - this.Position.X;
             const y: number = atom.Position.Y - this.Position.Y;
             return Math.sqrt(x * x + y * y);
+        }
+
+        public get Charge(): number {
+            return this._charge;
+        }
+
+        public get Color(): string {
+            return this._color;
         }
 
         public get Id(): number {
