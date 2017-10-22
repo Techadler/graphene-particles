@@ -9,6 +9,9 @@
   "author": "AdlerTech",
   "license": "MIT",
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^2.6.1",
+    "gulp-typescript": "^3.2.2",
     "tsc": "^1.20150623.0",
     "tslint": "^5.7.0",
     "typescript": "^2.5.3"
