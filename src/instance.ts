@@ -90,30 +90,34 @@ module Graphene {
             }
 
             if (this.Config.AutoAdjustAtomCount) {
-                const atoms: number = this._activeAtomCount > 0 ? this._activeAtomCount : maxAtoms;
+                const atoms: number = this._activeAtomCount; // > 0 ? this._activeAtomCount : maxAtoms;
                 if (this._control.LastFrameTime > 500) {
-                    targetAtomCount = atoms * 0.2;
+                    targetAtomCount = (atoms * 0.2) | 0;
                     this._autoAtomLimit = targetAtomCount;
-                } else if (this._framesBetweenControl <= 0 && averageFrameTime > maxFrameTime * 1.5) {
+                    console.log('PopulationControl:', 'Panic, reducing atom count from ' + atoms + ' to ' + targetAtomCount);
+                } else if (this._framesBetweenControl <= 0 && averageFrameTime > maxFrameTime * 1.5) { // Reduction
                     let f: number = maxFrameTime / averageFrameTime;
                     if (f < 0.8) { f = 0.8; }
                     targetAtomCount = Math.round(atoms * f);
                     if (targetAtomCount <= 1) { targetAtomCount = 2; }
                     this._autoAtomLimit = targetAtomCount;
                     this._framesBetweenControl = 100;
-                    console.log('PopulationControl:', 'Adjusting atom count from ' + atoms + ' to ' + targetAtomCount + ' Factor is:' + f);
+                    console.log('PopulationControl:', 'Reducing atom count from ' + atoms + ' to ' + targetAtomCount + ' Factor is:' + f);
                     console.log('AverageFrameTime: ', averageFrameTime, 'MaxFrameTime', maxFrameTime);
-                } else if (this._framesBetweenControl <= 0 && averageFrameTime > 0 && averageFrameTime < maxFrameTime * 0.5) {
+                } else if (this._framesBetweenControl <= 0
+                    && averageFrameTime > 0 && averageFrameTime < maxFrameTime * 0.5
+                    && (maxAtoms === 0 || atoms < maxAtoms)) { // Increase
                     let f: number = maxFrameTime / averageFrameTime;
                     if (f > 1.2) { f = 1.2; }
                     targetAtomCount = Math.round(atoms * f);
                     if (targetAtomCount - atoms > 250) { targetAtomCount = atoms + 250; }
-                    if (targetAtomCount <= 1) { targetAtomCount = 2; }
+                    if (targetAtomCount === atoms) { targetAtomCount++; }
+                    if (targetAtomCount > maxAtoms) { targetAtomCount = maxAtoms; }
                     this._autoAtomLimit = targetAtomCount;
                     this._framesBetweenControl = 100;
-                    console.log('PopulationControl:', 'Adjusting atom count from ' + atoms + ' to ' + targetAtomCount + ' Factor is:' + f);
+                    console.log('PopulationControl:', 'Increasing atom count from ' + atoms + ' to ' + targetAtomCount + ' Factor is:' + f);
                     console.log('AverageFrameTime: ', averageFrameTime, 'MaxFrameTime', maxFrameTime);
-                } else {
+                } else if (this._autoAtomLimit > 0) {
                     targetAtomCount = this._autoAtomLimit;
                 }
                 this._framesBetweenControl--;
