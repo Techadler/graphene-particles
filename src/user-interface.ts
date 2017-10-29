@@ -42,6 +42,7 @@ module Graphene {
                     this._focusedAtom.PhysicsLocked = true;
                     const vector: Vector = Vector.fromPoints(this._lastMousePosition, this._mousePosition);
                     this._focusedAtom.Vector = vector.scaleBy(1000 / (this.MousePosition.Time - this._lastMousePosition.Time));
+                    this._boundElement.style.cursor = 'move';
                 }
             } else if (this._pendingMouseAction === MouseAction.RELEASE) {
                 // If has atom, set atom vector and relase physics lock
@@ -52,10 +53,12 @@ module Graphene {
                     this._focusedAtom.Vector = vector.scaleBy(1000 / (this.MousePosition.Time - this._lastMousePosition.Time));
                     this._focusedAtom = null;
                 }
+                this._boundElement.style.cursor = 'default';
             } else if (this._mouseDown && this._focusedAtom != null) {
                 // Update Atom position
                 this._focusedAtom.Position.X = this.MousePosition.X;
                 this._focusedAtom.Position.Y = this.MousePosition.Y;
+                this._boundElement.style.cursor = 'move';
             } else {
                 // Update cursor
                 this._boundElement.style.cursor = targetedAtom != null ? 'pointer' : 'default';
