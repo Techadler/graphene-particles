@@ -1,5 +1,7 @@
 # Graphene
 
+A physics particle simulator running on HTML Canvas technology written in TypeScript.
+
 Demo can be found at `demo/index.html`
 
 ## Setup
