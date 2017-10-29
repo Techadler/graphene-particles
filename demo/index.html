@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <meta charset="utf-8">
     <script type="text/javascript" src="../build/graphene.js"></script>
     <style type="text/css">
         body {
@@ -17,15 +18,17 @@
     <script type="text/javascript">
         function main() {
             const config = {
+                DrawQuadTree: false,
                 BackgroundColor: '#1E3E5A',
                 AtomColor: '#2196F3',
                 LinkColor: '#E53935',
                 AtomBorderColor: '#FFFFFF',
                 MaxLinkLength: 250,
                 LinkWidth: 1.5,
-                WallFriction: 0.1,
-                AtomFriction: 0.5,
-                MaxAtoms: 1000
+                WallFriction: 0.9,
+                AtomFriction: 0.9,
+                Density: 0.1,
+                MaxAtoms: 200
             };
             var canvas = document.createElement('canvas');
             document.body.appendChild(canvas);
