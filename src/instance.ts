@@ -72,7 +72,7 @@ module Graphene {
         private controlAtomPopulation(): void {
             const densityAtomCount: number = Math.round(
                 this.Config.Density !== 0 ?
-                    (this._width * this._height) / 1000 / this.Config.Density : 0
+                    (this._width * this._height) / 1000 * this.Config.Density : 0
             );
             const maxAtoms: number = this.Config.MaxAtoms;
             const maxFrameTime: number = 1000 / this.Config.MaxFPS;
@@ -106,13 +106,15 @@ module Graphene {
                     console.log('AverageFrameTime: ', averageFrameTime, 'MaxFrameTime', maxFrameTime);
                 } else if (this._framesBetweenControl <= 0
                     && averageFrameTime > 0 && averageFrameTime < maxFrameTime * 0.5
-                    && (maxAtoms === 0 || atoms < maxAtoms)) { // Increase
+                    && (maxAtoms === 0 || atoms < maxAtoms)
+                    && (densityAtomCount === 0 || atoms < densityAtomCount)) { // Increase
                     let f: number = maxFrameTime / averageFrameTime;
                     if (f > 1.2) { f = 1.2; }
                     targetAtomCount = Math.round(atoms * f);
                     if (targetAtomCount - atoms > 250) { targetAtomCount = atoms + 250; }
                     if (targetAtomCount === atoms) { targetAtomCount++; }
-                    if (targetAtomCount > maxAtoms) { targetAtomCount = maxAtoms; }
+                    if (densityAtomCount > 0 && targetAtomCount > densityAtomCount) { targetAtomCount = densityAtomCount; }
+                    if (maxAtoms > 0 && targetAtomCount > maxAtoms) { targetAtomCount = maxAtoms; }
                     this._autoAtomLimit = targetAtomCount;
                     this._framesBetweenControl = 100;
                     console.log('PopulationControl:', 'Increasing atom count from ' + atoms + ' to ' + targetAtomCount + ' Factor is:' + f);
