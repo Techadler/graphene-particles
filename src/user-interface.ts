@@ -14,8 +14,10 @@ module Graphene {
         private _boundElement: HTMLElement;
         private _focusedAtom: Atom = null;
 
-        constructor(instance: Graphene.Instance) {
+        constructor(instance: Graphene.Instance, canvas: HTMLCanvasElement) {
+            console.log('Constructing User Interface');
             this._instance = instance;
+            this._canvas = canvas;
         }
 
         public bindTo(element: HTMLElement): void {
@@ -80,6 +82,7 @@ module Graphene {
             this._mouseDown = true;
             this._mousePosition.X = this.translateX(event.clientX);
             this._mousePosition.Y = this.translateY(event.clientY);
+            console.log('Click', event.clientX, event.clientY, this.MousePosition.X, this.MousePosition.Y);
             this._mousePosition.updateRecordTime();
             this._pendingMouseAction = MouseAction.CLICK;
         }
@@ -102,10 +105,12 @@ module Graphene {
         }
 
         private translateX(x: number): number {
-            return x;
+            const canvasRect: ClientRect = this._canvas.getBoundingClientRect();
+            return x - canvasRect.left;
         }
         private translateY(y: number): number {
-            return y;
+            const canvasRect: ClientRect = this._canvas.getBoundingClientRect();
+            return y - canvasRect.top;
         }
 
         public get MousePosition(): MousePosition {

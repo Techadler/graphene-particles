@@ -25,12 +25,14 @@ module Graphene {
 
         public Links: boolean[][] = new Array<boolean[]>();
 
-        constructor(id: string, canvas: HTMLCanvasElement, config: Config) {
+        constructor(id: string, canvas: HTMLCanvasElement, config: Config, useroverlay: HTMLElement = null) {
             this._id = id;
             this._canvas = canvas;
             this._config = Config.parse(config);
-            this._userInterface = new UserInterface(this);
-            this._userInterface.bindTo(canvas);
+            if (this._config.UserInterface) {
+                this._userInterface = new UserInterface(this, this._canvas);
+                this._userInterface.bindTo(useroverlay != null ? useroverlay : canvas);
+            }
 
             this.updateCanvasDimensions();
 
@@ -63,7 +65,9 @@ module Graphene {
                 this._lastRunTimeStamp = timestamp;
             }
 
-            this._userInterface.onUpdateCycle(this._physics);
+            if (this._userInterface != null) {
+                this._userInterface.onUpdateCycle(this._physics);
+            }
 
             this._loopId = window.requestAnimationFrame(this.mainLoop);
             this._control.onFrameStop();

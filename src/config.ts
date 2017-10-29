@@ -26,6 +26,7 @@ module Graphene {
         public Width: number = 0;
         public MaxHeight: number = 0;
         public MaxWidth: number = 0;
+        public UserInterface: boolean = true;
         // Physics
         public TPS: number = 60;
         public ElectricalForce: number = 0; // electrical force constant, acts between atoms. (1000 is a good value)
