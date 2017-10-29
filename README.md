@@ -2,7 +2,7 @@
 
 A physics particle simulator running on HTML Canvas technology written in TypeScript.
 
-Demo can be found at `https://techadler.github.io/graphene-particles/`
+Demo can be found at [here](https://techadler.github.io/graphene-particles/)
 
 ## Setup
 Install npm dependencies with `npm install`
