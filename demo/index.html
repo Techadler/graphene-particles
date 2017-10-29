@@ -1,23 +1,25 @@
 <!Doctype html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:300" rel="stylesheet">
     <script type="text/javascript" src="../build/graphene.js"></script>
-    <style type="text/css">
-        body {
-            width: 100vw;
-            height: 100vh;
-            margin: 0px;
-            overflow: hidden;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
+    <div class="graph-container">
+        <canvas id="canvas"></canvas>
+        <img src="logo-circular.png">
+        <h1>Techadler</h1>
+    </div>
+    <div class="graph-container" id="user-overlay"></div>
     <script type="text/javascript">
         function main() {
-            const config = {
+            var config = {
                 DrawQuadTree: false,
                 BackgroundColor: '#1E3E5A',
                 AtomColor: '#2196F3',
@@ -28,11 +30,10 @@
                 WallFriction: 0.9,
                 AtomFriction: 0.9,
                 Density: 0.1,
-                MaxAtoms: 200
+                MaxAtoms: 100
             };
-            var canvas = document.createElement('canvas');
-            document.body.appendChild(canvas);
-            const i = Graphene.InstanceManager.createInstance(canvas, config);
+            var canvas = document.getElementById('canvas');
+            var i = Graphene.InstanceManager.createInstance(canvas, config, document.getElementById('user-overlay'));
             i.start();
         }
 
