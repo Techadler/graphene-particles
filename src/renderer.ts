@@ -76,8 +76,8 @@ module Graphene {
         private drawLink(atom1: Atom, atom2: Atom): void {
             const dist: number = atom1.distanceTo(atom2);
             const v: Vector = Vector.fromAtoms(atom1, atom2);
-            const p1: Position = { X: atom1.Position.X, Y: atom1.Position.Y };
-            const p2: Position = { X: atom2.Position.X, Y: atom2.Position.Y };
+            const p1: Point = atom1.Position.clone();
+            const p2: Point = atom2.Position.clone();
             const v1: Vector = v.scaleTo(atom1.Size); p1.X += v1.X; p1.Y += v1.Y;
             const v2: Vector = v.invert().scaleTo(atom2.Size); p2.X += v2.X; p2.Y += v2.Y;
             let fac: number = (1 - (dist * dist) / Math.pow(this._instance.Config.MaxLinkLength, 2));

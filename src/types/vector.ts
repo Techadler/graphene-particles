@@ -13,7 +13,7 @@ module Graphene {
             return this._y;
         }
 
-        constructor(x: number, y: number) {
+        constructor(x: number = 0, y: number = 0) {
             this._x = x;
             this._y = y;
         }

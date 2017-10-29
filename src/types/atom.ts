@@ -6,13 +6,13 @@ module Graphene {
         private _charge: number;
         private _color: string;
         private _mass: number;
-        private _position: Graphene.Position;
+        private _position: Point;
         private _size: number;
         private _vector: Vector;
         public Links: number = 0;
         public Visible: boolean;
 
-        constructor(id: number, minSize: number, maxSize: number, pos: Graphene.Position, vec: Vector) {
+        constructor(id: number, minSize: number, maxSize: number, pos: Point, vec: Vector) {
             this._id = id;
             this._position = pos;
             this._charge = Math.random() > 0.5 ? 1 : -1;
@@ -48,7 +48,7 @@ module Graphene {
             return this._mass;
         }
 
-        public get Position(): Graphene.Position {
+        public get Position(): Point {
             return this._position;
         }
         public get Size(): number {
@@ -60,10 +60,5 @@ module Graphene {
         public set Vector(value: Vector) {
             this._vector = value;
         }
-    }
-
-    export class Position {
-        public X: number;
-        public Y: number;
     }
 }

@@ -127,8 +127,8 @@ module Graphene {
             this._activeAtomCount = this._atoms.length;
         }
 
-        private getRandomPosition(): Position {
-            return { X: Math.random() * this.Width, Y: Math.random() * this.Height };
+        private getRandomPosition(): Point {
+            return new Point(Math.random() * this.Width, Math.random() * this.Height);
         }
 
         private getRandomVector(): Vector {

@@ -75,7 +75,6 @@ module Graphene {
                 atom2.Position.Y += -atom2.Vector.Y * this.getSpeedFactor() * 0.1;
                 ++cnt;
             }
-            // console.log('Took ' + cnt + ' steps back');
             const calcVsAndVe: Function = function (nd1: Atom, nd2: Atom): any { // vS in Richtung der Stoßnormalen, vE Orthogonal
                 let n: Vector = Vector.fromAtoms(nd1, nd2);
                 n = n.scaleTo(nd1.Size);
