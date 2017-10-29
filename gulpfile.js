@@ -10,7 +10,8 @@ gulp.task('build', function () {
         .pipe(tsproject());
     return tsresult.js
         .pipe(sourcemaps.write(''))
-        .pipe(gulp.dest('build'));
+        .pipe(gulp.dest('build'))
+        .pipe(gulp.dest('docs'));
 });
 
 gulp.task('default', ['build'], function () {

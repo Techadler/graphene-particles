@@ -82,7 +82,6 @@ module Graphene {
             this._mouseDown = true;
             this._mousePosition.X = this.translateX(event.clientX);
             this._mousePosition.Y = this.translateY(event.clientY);
-            console.log('Click', event.clientX, event.clientY, this.MousePosition.X, this.MousePosition.Y);
             this._mousePosition.updateRecordTime();
             this._pendingMouseAction = MouseAction.CLICK;
         }

@@ -807,7 +807,6 @@ var Graphene;
                 _this._mouseDown = true;
                 _this._mousePosition.X = _this.translateX(event.clientX);
                 _this._mousePosition.Y = _this.translateY(event.clientY);
-                console.log('Click', event.clientX, event.clientY, _this.MousePosition.X, _this.MousePosition.Y);
                 _this._mousePosition.updateRecordTime();
                 _this._pendingMouseAction = MouseAction.CLICK;
             };
