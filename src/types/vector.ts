@@ -22,6 +22,10 @@ module Graphene {
             return new Vector(atom2.Position.X - atom1.Position.X, atom2.Position.Y - atom1.Position.Y);
         }
 
+        public static fromPoints(point1: Point, point2: Point): Vector {
+            return new Vector(point2.X - point1.X, point2.Y - point1.Y);
+        }
+
         public add(v: Vector): Vector {
             return new Vector(this._x + v._x, this._y + v._y);
         }

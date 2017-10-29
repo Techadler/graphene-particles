@@ -172,8 +172,10 @@ module Graphene {
         private moveAtoms(): void {
             const sf: number = this.getSpeedFactor();
             for (const atom of this._instance.Atoms) {
-                atom.Position.X += atom.Vector.X * sf;
-                atom.Position.Y += atom.Vector.Y * sf;
+                if (!atom.PhysicsLocked) {
+                    atom.Position.X += atom.Vector.X * sf;
+                    atom.Position.Y += atom.Vector.Y * sf;
+                }
             }
         }
 

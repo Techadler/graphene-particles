@@ -7,6 +7,7 @@ module Graphene {
         private _config: Config;
         private _renderer: Renderer;
         private _physics: Physics;
+        private _userInterface: UserInterface;
 
         private _activeAtomCount: number = 0;
         private _atoms: Atom[] = new Array<Atom>();
@@ -28,6 +29,8 @@ module Graphene {
             this._id = id;
             this._canvas = canvas;
             this._config = Config.parse(config);
+            this._userInterface = new UserInterface(this);
+            this._userInterface.bindTo(canvas);
 
             this.updateCanvasDimensions();
 
@@ -59,6 +62,9 @@ module Graphene {
                 this._renderer.doRenderCycle();
                 this._lastRunTimeStamp = timestamp;
             }
+
+            this._userInterface.onUpdateCycle(this._physics);
+
             this._loopId = window.requestAnimationFrame(this.mainLoop);
             this._control.onFrameStop();
         }

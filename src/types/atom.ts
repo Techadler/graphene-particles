@@ -9,6 +9,7 @@ module Graphene {
         private _position: Point;
         private _size: number;
         private _vector: Vector;
+        private _physicsLock: boolean = false;
         public Links: number = 0;
         public Visible: boolean;
 
@@ -46,6 +47,13 @@ module Graphene {
 
         public get Mass(): number {
             return this._mass;
+        }
+
+        public get PhysicsLocked(): boolean {
+            return this._physicsLock;
+        }
+        public set PhysicsLocked(value: boolean) {
+            this._physicsLock = value;
         }
 
         public get Position(): Point {
